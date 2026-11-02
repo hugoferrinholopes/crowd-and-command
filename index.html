@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Crowd and Command — Hugo Ferrinho Lopes</title>
-<meta name="description" content="A classroom game for pairs: one student plays the police, the other the protesters. Choose, show your screens, reveal. By Hugo Ferrinho Lopes for GOVT 3421, Youth and Politics, Georgetown University.">
+<title>Crowd and Command | Hugo Ferrinho Lopes</title>
+<meta name="description" content="A classroom game for two players. One student plays the police and the other plays the protesters. By Hugo Ferrinho Lopes for GOVT 3421, Youth and Politics, Georgetown University.">
 <meta name="author" content="Hugo Ferrinho Lopes">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Crowd and Command — Hugo Ferrinho Lopes">
-<meta property="og:description" content="A classroom game for pairs: police against protesters, for GOVT 3421, Youth and Politics, Georgetown University.">
+<meta property="og:title" content="Crowd and Command | Hugo Ferrinho Lopes">
+<meta property="og:description" content="A classroom game for two players, police and protesters, for GOVT 3421, Youth and Politics, Georgetown University.">
 <meta property="og:url" content="https://hugoferrinholopes.github.io/crowd-and-command/">
 <style>
 :root{
   --blue:#004676; --light:#4393C3; --orange:#BE4B14; --grey:#5F6368;
-  --ink:#1b1f23; --line:#d9dde1; --pale:#f3f6f9; --paleo:#fbf1ec; --paleb:#e3edf5; --gold:#fff4cc; --bg:#ffffff;
+  --ink:#1b1f23; --line:#d9dde1; --pale:#f3f6f9; --paleo:#fbf1ec; --gold:#fff4cc; --bg:#ffffff;
 }
 *{box-sizing:border-box}
 html{font-size:112.5%}
@@ -32,7 +32,7 @@ button:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid
 .btn{background:var(--blue);color:#fff;border:0;padding:.5rem 1rem}
 .btn[disabled]{background:#c7ccd1;color:#4a4f54;cursor:not-allowed}
 .ghost{background:#fff;color:var(--blue);border:2px solid var(--blue);padding:.45rem .85rem}
-.linkbtn{background:none;border:0;color:var(--blue);text-decoration:underline;padding:.2rem;min-height:36px;font-size:.95rem}
+.linkbtn{background:none;border:0;text-decoration:underline;padding:.2rem;min-height:36px;font-size:.95rem}
 .toolbar{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0}
 /* role */
 .role{text-align:center;border-radius:.7rem;padding:.8rem 1rem .5rem;margin:1rem 0;color:#fff}
@@ -43,10 +43,10 @@ button:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid
 .howto{border:2px solid var(--ink);border-radius:.6rem;padding:.6rem .9rem;margin:1rem 0;background:#fff}
 .howto ol{margin:.3rem 0 .2rem;padding-left:1.3rem}
 .howto li{margin:.25rem 0}
-/* key words */
-.words{display:grid;grid-template-columns:1fr;gap:.4rem;margin:.8rem 0}
-@media(min-width:40rem){.words{grid-template-columns:1fr 1fr}}
-.word{font-size:.92rem;border-left:4px solid var(--light);background:var(--pale);padding:.35rem .6rem;border-radius:.3rem}
+/* words and scale */
+details.box{border:1px solid var(--line);border-radius:.6rem;padding:.2rem .8rem;margin:.8rem 0;background:#fff}
+details.box summary{cursor:pointer;font-weight:700;color:var(--blue);min-height:44px;display:flex;align-items:center}
+.word{font-size:.92rem;border-left:4px solid var(--light);background:var(--pale);padding:.35rem .6rem;border-radius:.3rem;margin:.35rem 0}
 .word strong{color:var(--blue)}
 .scale{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;margin:.6rem 0}
 .toggle{display:flex;align-items:center;gap:.5rem;min-height:44px;font-size:.95rem}
@@ -59,33 +59,31 @@ button:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid
 /* scenario card */
 .scen{border:1px solid var(--line);border-radius:.7rem;padding:.8rem .9rem;margin:1.2rem 0;background:#fff}
 .scen h3{color:var(--blue);font-size:1.2rem}
+.bonus{font-size:1.15rem;color:var(--orange);margin:1.8rem 0 -.4rem}
 .story{font-size:1rem;margin:.2rem 0 .6rem}
 /* matrix */
 .mx{display:grid;grid-template-columns:minmax(4.2rem,6.5rem) minmax(0,1fr) minmax(0,1fr);gap:.35rem;margin:.6rem 0}
-.cell .lab{white-space:normal}
 .mx .h{font-weight:700;font-size:.85rem;display:flex;align-items:flex-end;justify-content:center;text-align:center;padding:.15rem}
 .mx .h.po{color:var(--blue)} .mx .h.pr{color:var(--orange);align-items:center;justify-content:flex-end;text-align:right}
 .mx .h small{display:block;font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
 .cell{border:2px solid var(--line);border-radius:.55rem;padding:.45rem .5rem;background:#fff;font-size:.86rem;line-height:1.35;transition:background .2s,border-color .2s}
 .cell .what{margin-bottom:.2rem}
+.cell .lab{white-space:normal}
 .pub{color:var(--grey);font-style:italic}
 .cell.hit{border-color:var(--orange);box-shadow:0 0 0 2px var(--orange) inset}
 .cell.eq{background:var(--gold);border-color:#c79a00}
 /* choice */
 .choose{background:var(--pale);border-radius:.6rem;padding:.6rem .7rem;margin:.6rem 0}
-.choose .q{font-weight:700;margin-bottom:.35rem}
+.choose .q{font-weight:700;margin:.2rem 0 .35rem}
 .big{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
 .big button{background:#fff;border:2px solid var(--line);font-weight:700;font-size:1.02rem;min-height:56px;padding:.4rem;color:var(--ink)}
 .big button.sel.pr{background:var(--orange);border-color:var(--orange);color:#fff}
 .big button.sel.po{background:var(--blue);border-color:var(--blue);color:#fff}
-.big button:disabled{cursor:default}
-.plan{display:grid;grid-template-columns:1fr;gap:.5rem}
-.plan .row .small{color:var(--ink);font-weight:600;font-size:.88rem;margin-bottom:.2rem}
+.big button:disabled{cursor:default;opacity:.55}
+.big button.sel:disabled{opacity:1}
 .reveal{border:2px solid var(--ink);border-radius:.6rem;padding:.6rem .8rem;margin:.6rem 0;background:#fff;animation:fadein .35s ease-out}
 .reveal p{margin:.35rem 0}
 .yes{color:#2e7d4f;font-weight:700} .no{color:var(--orange);font-weight:700}
-.partner{margin-top:.5rem;font-size:.92rem}
-.partner .toolbar{margin:.3rem 0}
 @keyframes fadein{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){.reveal{animation:none}}
 details.sol{margin:.7rem 0 .2rem;border-top:1px dashed var(--line);padding-top:.3rem}
@@ -95,7 +93,7 @@ details.sol summary{cursor:pointer;font-weight:700;color:var(--blue);min-height:
 /* tree */
 .tree{margin:.6rem 0;font-size:.92rem}
 .tree ul{list-style:none;margin:0;padding-left:1.1rem;border-left:3px solid #c7ccd1}
-.tree li{position:relative;margin:.45rem 0 .45rem 0;padding-left:.9rem}
+.tree li{position:relative;margin:.45rem 0;padding-left:.9rem}
 .tree li::before{content:"";position:absolute;left:-1.1rem;top:.85rem;width:1.75rem;border-top:3px solid #c7ccd1}
 .tree .node{font-weight:700;margin:.1rem 0}
 .tree .node.pr{color:var(--orange)} .tree .node.po{color:var(--blue)}
@@ -130,7 +128,7 @@ footer.site a{color:var(--grey)}
 <main>
 <header>
   <h1>Crowd and Command</h1>
-  <p class="lede">A game for two: one of you plays the police, the other the protesters.</p>
+  <p class="lede">A game for two players. One student plays the police; the other plays the protesters.</p>
 </header>
 
 <div class="role" id="roleBox" aria-live="polite">
@@ -142,45 +140,44 @@ footer.site a{color:var(--grey)}
 <div class="howto">
   <h3>How to play</h3>
   <ol>
-    <li>Find a partner who has the other role. If you both got the same role, one of you taps “Switch role”.</li>
-    <li>In each scenario, read the story and the possible outcomes, then choose. Do not talk.</li>
-    <li>Show each other your screens, then press “Reveal”.</li>
-    <li>Each outcome says how good it is for each side: Best, Good, Bad or Worst. Your own side is highlighted.</li>
+    <li>Pair with a student who has the other role. If both have the same role, one of you selects “Switch role”.</li>
+    <li>Each round describes a situation and its possible outcomes. Choose without talking.</li>
+    <li>Show each other your screens, then select “Reveal”. In Part 2, the protester chooses first and the police player responds.</li>
+    <li>Each outcome is ranked for each side as Best, Good, Bad or Worst. The ranks for your side are highlighted.</li>
   </ol>
 </div>
 
-<section aria-labelledby="h-words">
-  <h3 id="h-words">Five words you will need</h3>
-  <div class="words">
-    <div class="word"><strong>Player:</strong> one side in the game, the protesters or the police.</div>
-    <div class="word"><strong>Strategy:</strong> a choice a side can make, such as a peaceful march or a crackdown.</div>
-    <div class="word"><strong>Payoff:</strong> how an outcome ranks for a side: Best, Good, Bad or Worst.</div>
-    <div class="word"><strong>Best reply:</strong> your choice that gives you the better result, given what the other side does.</div>
-    <div class="word"><strong>Equilibrium:</strong> a pair of choices where neither side could do better by changing only its own choice.</div>
-  </div>
-  <div class="scale" aria-hidden="true">
-    <span class="small">The scale, for each side:</span>
-    <span class="lab">Best</span><span class="small">›</span><span class="lab">Good</span><span class="small">›</span><span class="lab">Bad</span><span class="small">›</span><span class="lab">Worst</span>
-  </div>
-  <label class="toggle"><input type="checkbox" id="numToggle"> Show as numbers (4 = best, 1 = worst)</label>
-  <p class="small">The rankings are illustrative: they are made up to show how the game works, not measured.</p>
-</section>
+<div class="scale">
+  <span class="small">Ranks for each side:</span>
+  <span class="lab">Best</span><span class="small" aria-hidden="true">›</span><span class="lab">Good</span><span class="small" aria-hidden="true">›</span><span class="lab">Bad</span><span class="small" aria-hidden="true">›</span><span class="lab">Worst</span>
+</div>
+<label class="toggle"><input type="checkbox" id="numToggle"> Show as numbers (4 = best, 1 = worst)</label>
+<p class="small">The ranks are illustrative. They show how the game works; they are not measurements.</p>
 
-<h2>Part 1. Choose at the same time</h2>
-<p>The protesters choose a <strong>peaceful march</strong> or <strong>disruptive action</strong>. At the same moment, the police choose to <strong>facilitate</strong> or to <strong>crack down</strong>. Neither side knows what the other will do.</p>
+<details class="box">
+  <summary>Words you will need</summary>
+  <div class="word"><strong>Player:</strong> one side in the game, the protesters or the police.</div>
+  <div class="word"><strong>Strategy:</strong> a choice available to a side, such as a peaceful march or a crackdown.</div>
+  <div class="word"><strong>Payoff:</strong> the rank of an outcome for a side: Best, Good, Bad or Worst.</div>
+  <div class="word"><strong>Best reply:</strong> the choice that gives a side the higher rank, given the other side’s choice.</div>
+  <div class="word"><strong>Equilibrium:</strong> a pair of choices in which neither side can obtain a higher rank by changing only its own choice.</div>
+</details>
+
+<h2>Part 1. Both sides choose at the same time</h2>
+<p>The protesters choose a peaceful march or disruptive action. The police choose to facilitate the protest or to crack down. Neither side knows the other’s choice.</p>
 <div id="matrices"></div>
 
-<h2>Part 2. Choose one after the other</h2>
-<p>Now the protesters move first. The police see what they did and then respond, and the public reacts. Each side can look ahead to what the other will do.</p>
+<h2>Part 2. The protesters move first</h2>
+<p>The protesters choose first and show their screen. The police player sees the move and then responds. Each outcome also states how the public reacts.</p>
 <div id="trees"></div>
 
 <h2>Quiz</h2>
 <div id="quiz"></div>
 <p id="score" class="score" hidden></p>
-<div class="toolbar"><button type="button" class="ghost" id="qReset">Start the quiz again</button></div>
+<div class="toolbar"><button type="button" class="ghost" id="qReset">Restart the quiz</button></div>
 
 <footer class="site">
-  <p>Built by Hugo Ferrinho Lopes for GOVT 3421, <em>Youth and Politics</em>, Department of Government, Georgetown University, Fall 2026 — <a href="https://hugoferrinholopes.github.io/">hugoferrinholopes.github.io</a></p>
+  <p>Built by Hugo Ferrinho Lopes for GOVT 3421, <em>Youth and Politics</em>, Department of Government, Georgetown University, Fall 2026. <a href="https://hugoferrinholopes.github.io/">hugoferrinholopes.github.io</a></p>
 </footer>
 </main>
 
@@ -190,41 +187,39 @@ const $ = id => document.getElementById(id);
 const WORD = {4: "Best", 3: "Good", 2: "Bad", 1: "Worst"};
 const PRO = ["Peaceful march", "Disruptive action"];   // protesters: rows / first move
 const POL = ["Facilitate", "Crack down"];               // police: columns / response
+const PROa = ["a peaceful march", "disruptive action"];  // in sentences
+const POLv = ["facilitate", "crack down"];               // in sentences
 const SIDE = {pro: "protesters", pol: "police"};
-const PROa = ["a peaceful march", "disruptive action"];   // in sentences
-const POLv = ["facilitate", "crack down"];                // in sentences
-const chose = (side, i) => side === "pro" ? PROa[i] : "to " + POLv[i];
 
 /* Scenarios. p = [protesters, police], ranks 4 (best) to 1 (worst).
    cells[r][c]: r = protesters' choice, c = police choice. */
 const SCEN = {
   cm: {name: "Climate march",
-    story: "Thousands of school students want to march for the climate, and most of the city is on their side.",
+    story: "Thousands of school students plan a climate march. Most residents support them.",
     cells: [
-      [{p: [4, 3], what: "The march goes ahead with a police escort.", pub: "The public backs the students."},
-       {p: [3, 1], what: "Police break up a peaceful march.", pub: "The public turns against the police."}],
-      [{p: [2, 2], what: "Students block the city center and the police let it happen.", pub: "The public turns against the students."},
-       {p: [1, 4], what: "Students block the city center and the police clear it.", pub: "The public backs the police."}]
+      [{p: [4, 3], what: "The march proceeds with a police escort.", pub: "The public supports the students."},
+       {p: [3, 1], what: "The police break up a peaceful march.", pub: "The public turns against the police."}],
+      [{p: [2, 2], what: "Students block the city center, and the police do not intervene.", pub: "The public turns against the students."},
+       {p: [1, 4], what: "Students block the city center, and the police clear it.", pub: "The public supports the police."}]
     ],
-    matrixMeaning: "Marching peacefully is the protesters’ best choice whatever the police do, and the police’s best reply to a peaceful march is to escort it.",
-    treeLesson: "Cracking down on a peaceful march would turn the public against the police, their worst outcome, so the police escort the march. The students can see this coming, and they march."},
+    matrixMeaning: "A peaceful march is the protesters’ best choice whatever the police do. Cracking down on a peaceful march turns the public against the police, their worst outcome, so the police escort the march."},
   rb: {name: "Road blockade",
-    story: "A small group wants attention for its cause. A march of a few dozen people would go unnoticed.",
+    story: "A small group seeks attention for its cause. A march of a few dozen people would go unnoticed.",
     cells: [
-      [{p: [3, 4], what: "A small march goes ahead quietly.", pub: "The public hardly notices."},
-       {p: [1, 3], what: "Police stop the small march before it starts.", pub: "Nobody hears about it."}],
-      [{p: [4, 1], what: "The group blocks a main road for hours while the police stand by.", pub: "The cause makes the news, but drivers turn against the protesters."},
-       {p: [2, 2], what: "Police clear the road by force and arrest the group.", pub: "The public turns against both sides."}]
+      [{p: [3, 4], what: "A small march proceeds quietly.", pub: "The public hardly notices."},
+       {p: [1, 3], what: "The police stop the small march before it starts.", pub: "The public does not hear about it."}],
+      [{p: [4, 1], what: "The group blocks a main road for hours, and the police do not intervene.", pub: "The cause reaches the news, but drivers turn against the protesters."},
+       {p: [2, 2], what: "The police clear the road by force and arrest the group.", pub: "The public turns against both sides."}]
     ],
-    matrixMeaning: "Blocking is better for the group whatever the police do, so it blocks and the police clear the road: Bad for both. Both would prefer a quiet march that the police allow, but neither can get there by changing only its own choice.",
-    treeLesson: "Moving first changes the result. The group can see that a blockade would be cleared by force, so blocking no longer pays: it marches, and both sides end up better off than when they choose at the same time."},
+    matrixMeaning: "Blocking is the group’s best choice whatever the police do, and the police’s best reply to a blockade is to clear it. Both sides end at Bad, although both rank a quiet march that the police allow higher. Neither side can reach it by changing only its own choice.",
+    treeLesson: "Moving first changes the outcome. The group can see that the police would clear a blockade by force, so blocking no longer pays. The group marches, and both sides end better off than when they choose at the same time."},
   cat: {name: "Cat and mouse",
-    story: "The police must prepare in advance, with an escort or with riot gear. The group wants to catch them unprepared.",
+    story: "The police must prepare in advance, either with an escort or with riot gear. The group wants to find the police unprepared.",
     cells: [
-      [{p: [3, 4], what: "A peaceful march meets a relaxed police escort.", pub: ""},
-       {p: [2, 1], what: "Riot police line up for a peaceful march. It looks heavy-handed.", pub: ""}],
-      [{p: [4, 2], what: "The group surprises an unprepared police force and blocks the road.", pub: ""},
-       {p: [1, 3], what: "Riot police are ready, and the blockade is cleared in minutes.", pub: ""}]
+      [{p: [3, 4], what: "A peaceful march meets a police escort.", pub: ""},
+       {p: [2, 1], what: "Riot police line up for a peaceful march, and the response appears excessive.", pub: ""}],
+      [{p: [4, 2], what: "The group finds the police unprepared and blocks the road.", pub: ""},
+       {p: [1, 3], what: "Riot police are ready and clear the blockade within minutes.", pub: ""}]
     ],
     matrixMeaning: "No pair of choices that both sides would stick to: each side wants to keep the other guessing."}
 };
@@ -242,8 +237,6 @@ const treeSolve = s => {
   const pro = P(s, 0, pol[0])[0] >= P(s, 1, pol[1])[0] ? 0 : 1;
   return {pol, pro};
 };
-// protesters' best first move against a given police plan [reply to march, reply to disruption]
-const proAgainstPlan = (s, plan) => P(s, 0, plan[0])[0] >= P(s, 1, plan[1])[0] ? 0 : 1;
 
 /* ---------- State ---------- */
 let role = null, showNum = false;
@@ -252,9 +245,10 @@ document.addEventListener("toggle", e => {
   const d = e.target;
   if (d.matches && d.matches("details[data-open]")) { if (d.open) openSol.add(d.dataset.open); else openSol.delete(d.dataset.open); }
 }, true);
+const MATRICES = ["cm", "rb", "cat"], TREES = ["rb"];
 const mState = {}, tState = {};
-for (const k of ["cm", "rb", "cat"]) mState[k] = {choice: null, revealed: false, partner: null, step: 0};
-for (const k of ["cm", "rb"]) tState[k] = {move: null, plan: [null, null], revealed: false, step: 0};
+for (const k of MATRICES) mState[k] = {choice: null, revealed: false, step: 0};
+for (const k of TREES) tState[k] = {move: null, resp: null, revealed: false, step: 0};
 
 function pickRole() {
   let r = null;
@@ -267,8 +261,8 @@ function setRole(r) {
   try { sessionStorage.setItem("cc-role", r); } catch (e) {}
   $("roleName").textContent = r === "pro" ? "Protesters" : "Police";
   $("roleBox").className = "role " + r;
-  for (const k in mState) Object.assign(mState[k], {choice: null, revealed: false, partner: null});
-  for (const k in tState) Object.assign(tState[k], {move: null, plan: [null, null], revealed: false});
+  for (const k in mState) Object.assign(mState[k], {choice: null, revealed: false});
+  for (const k in tState) Object.assign(tState[k], {move: null, resp: null, revealed: false});
   renderAll();
 }
 
@@ -279,21 +273,20 @@ function labels(p, stars) {
   return `<span class="lab pr${role === "pro" ? " mine" : ""}">Protesters: ${fmt(p[0])}${stars[0] ? '<span class="star" aria-label="best reply">★</span>' : ""}</span>` +
          `<span class="lab po${role === "pol" ? " mine" : ""}">Police: ${fmt(p[1])}${stars[1] ? '<span class="star" aria-label="best reply">★</span>' : ""}</span>`;
 }
-function outcome(cell) {
-  return `<div class="what">${cell.what}${cell.pub ? ` <span class="pub">${cell.pub}</span>` : ""}</div>`;
-}
-const lc = s => s.toLowerCase();
+const outcome = cell => `<div class="what">${cell.what}${cell.pub ? ` <span class="pub">${cell.pub}</span>` : ""}</div>`;
+const chose = (side, i) => side === "pro" ? PROa[i] : "to " + POLv[i];
+const bigButtons = (opts, sel, cls, attr, disabled) => opts.map((m, i) =>
+  `<button type="button" class="${sel === i ? "sel " + cls : ""}" ${attr}="${i}" aria-pressed="${sel === i}"${disabled ? " disabled" : ""}>${m}</button>`).join("");
 
 /* ---------- Part 1: matrices ---------- */
 function renderMatrix(k) {
   const S = SCEN[k], st = mState[k];
-  const mine = role === "pro" ? PRO : POL, theirs = role === "pro" ? POL : PRO;
+  const mine = role === "pro" ? PRO : POL;
   let hit = null;
   if (st.revealed) {
-    const other = st.partner !== null ? st.partner : (role === "pro" ? brPol(k, st.choice) : brPro(k, st.choice));
+    const other = role === "pro" ? brPol(k, st.choice) : brPro(k, st.choice);
     hit = role === "pro" ? [st.choice, other] : [other, st.choice];
   }
-  // matrix
   let g = `<div class="h"></div>` + POL.map(c => `<div class="h po"><span><small>Police</small>${c}</span></div>`).join("");
   for (let r = 0; r < 2; r++) {
     g += `<div class="h pr"><span><small>Protesters</small>${PRO[r]}</span></div>`;
@@ -306,60 +299,43 @@ function renderMatrix(k) {
       g += `<div class="${cls.join(" ")}">${outcome(cell)}${labels(cell.p, stars)}</div>`;
     }
   }
-  // choice
   const who = role === "pro" ? "pr" : "po";
-  let ch = `<div class="choose"><div class="q">Your choice as the ${SIDE[role]}:</div><div class="big">` +
-    mine.map((m, i) => `<button type="button" class="${st.choice === i ? "sel " + who : ""}" data-k="${k}" data-i="${i}" aria-pressed="${st.choice === i}"${st.revealed ? " disabled" : ""}>${m}</button>`).join("") +
+  let ch = `<div class="choose"><div class="q">Your choice as the ${SIDE[role]}</div><div class="big" data-k="${k}">` +
+    bigButtons(mine, st.choice, who, "data-i", st.revealed) +
     `</div><div class="toolbar"><button type="button" class="btn" data-reveal="${k}"${st.choice === null || st.revealed ? " disabled" : ""}>Reveal</button>` +
     (st.revealed ? `<button type="button" class="ghost" data-again="${k}">Play again</button>` : "") + `</div>` +
-    (st.choice === null ? `<p class="small">Choose without talking. Then show each other your screens and press Reveal.</p>` : "") + `</div>`;
-  // reveal
+    (st.choice === null ? `<p class="small">Choose without talking. Show each other your screens, then select Reveal.</p>` : "") + `</div>`;
   let rv = "";
   if (st.revealed) {
-    const otherName = role === "pro" ? "police" : "protesters";
     const br = role === "pro" ? brPol(k, st.choice) : brPro(k, st.choice);
     const [r, c] = hit, cell = S.cells[r][c];
-    rv = `<div class="reveal">`;
-    if (st.partner === null) {
-      rv += `<p>You chose <strong>${chose(role, st.choice)}</strong>. The ${otherName === "police" ? "police’s" : "protesters’"} best reply is <strong>${otherName === "police" ? "to " + POLv[br] : PROa[br]}</strong>.</p>`;
-    } else {
-      rv += `<p>You chose <strong>${chose(role, st.choice)}</strong>; your partner chose <strong>${chose(role === "pro" ? "pol" : "pro", st.partner)}</strong>.</p>`;
-    }
-    rv += `<p>What happens: ${cell.what}${cell.pub ? " " + cell.pub : ""}</p><p>${labels(cell.p)}</p>`;
-    rv += `<p>${eqText(k, r, c)}</p>`;
-    rv += `<div class="partner">Did your partner choose something else? Tap their choice:<div class="toolbar">` +
-      theirs.map((t, i) => `<button type="button" class="ghost" data-partner="${k}" data-i="${i}">${t}</button>`).join("") + `</div></div></div>`;
+    const theirBR = role === "pro" ? `The police’s best reply is <strong>to ${POLv[br]}</strong>.` : `The protesters’ best reply is <strong>${PROa[br]}</strong>.`;
+    rv = `<div class="reveal"><p>You chose <strong>${chose(role, st.choice)}</strong>. ${theirBR}</p>` +
+      `<p>Outcome: ${cell.what}${cell.pub ? " " + cell.pub : ""}</p><p>${labels(cell.p)}</p><p>${eqText(k, r, c)}</p></div>`;
   }
-  // solution
-  const sol = solutionMatrix(k);
-  return `<div class="scen" id="m-${k}"><h3>${S.name}</h3><p class="story">${S.story}</p><div class="mx" aria-label="${S.name}: the four possible outcomes">${g}</div>${ch}${rv}${sol}</div>`;
+  return `<div class="scen" id="m-${k}"><h3>${S.name}</h3><p class="story">${S.story}</p><div class="mx" aria-label="${S.name}: the four possible outcomes">${g}</div>${ch}${rv}${solutionMatrix(k)}</div>`;
 }
 
 function eqText(k, r, c) {
-  if (isEq(k, r, c)) return `<span class="yes">Equilibrium.</span> Neither side could do better by changing only its own choice.`;
+  if (isEq(k, r, c)) return `<span class="yes">Equilibrium.</span> Neither side can obtain a higher rank by changing only its own choice.`;
   const parts = [];
   const bp = brPro(k, c), bq = brPol(k, r);
-  if (bp !== r) parts.push(`the protesters would rather choose ${PROa[bp]} (${fmt(P(k, bp, c)[0])} instead of ${fmt(P(k, r, c)[0])})`);
-  if (bq !== c) parts.push(`the police would rather ${POLv[bq]} (${fmt(P(k, r, bq)[1])} instead of ${fmt(P(k, r, c)[1])})`);
-  return `<span class="no">Not an equilibrium:</span> ${parts.join(", and ")}.`;
+  if (bp !== r) parts.push(`The protesters would obtain a higher rank with ${PROa[bp]} (${fmt(P(k, bp, c)[0])} instead of ${fmt(P(k, r, c)[0])}).`);
+  if (bq !== c) parts.push(`The police would obtain a higher rank if they chose to ${POLv[bq]} (${fmt(P(k, r, bq)[1])} instead of ${fmt(P(k, r, c)[1])}).`);
+  return `<span class="no">Not an equilibrium.</span> ${parts.join(" ")}`;
 }
 
 function solutionMatrix(k) {
-  const st = mState[k];
-  const lines = [];
-  if (st.step >= 1) lines.push(`<p><strong style="color:var(--orange)">Protesters’ best replies (★).</strong> ` + POL.map((col, c) => {
-    const a = P(k, 0, c)[0], b = P(k, 1, c)[0];
-    return `If the police ${lc(col)}: a peaceful march is ${fmt(a)}, disruptive action is ${fmt(b)}, so <strong>${PROa[brPro(k, c)]}</strong>.`;
-  }).join(" ") + `</p>`);
-  if (st.step >= 2) lines.push(`<p><strong style="color:var(--blue)">Police’s best replies (★).</strong> ` + PRO.map((row, r) => {
-    const a = P(k, r, 0)[1], b = P(k, r, 1)[1];
-    return `If the protesters choose ${PROa[r]}: facilitating is ${fmt(a)}, cracking down is ${fmt(b)}, so <strong>${POLv[brPol(k, r)]}</strong>.`;
-  }).join(" ") + `</p>`);
+  const st = mState[k], lines = [];
+  if (st.step >= 1) lines.push(`<p><strong style="color:var(--orange)">Protesters’ best replies (★).</strong> ` + POL.map((col, c) =>
+    `If the police ${POLv[c]}, a peaceful march ranks ${fmt(P(k, 0, c)[0])} and disruptive action ranks ${fmt(P(k, 1, c)[0])}, so the best reply is ${PROa[brPro(k, c)]}.`).join(" ") + `</p>`);
+  if (st.step >= 2) lines.push(`<p><strong style="color:var(--blue)">Police’s best replies (★).</strong> ` + PRO.map((row, r) =>
+    `If the protesters choose ${PROa[r]}, facilitating ranks ${fmt(P(k, r, 0)[1])} and cracking down ranks ${fmt(P(k, r, 1)[1])}, so the best reply is to ${POLv[brPol(k, r)]}.`).join(" ") + `</p>`);
   if (st.step >= 3) {
     const eq = equilibria(k);
     lines.push(eq.length
-      ? `<p>Equilibrium (gold): <strong>${eq.map(([r, c]) => `${PRO[r]} and ${POL[c]}`).join("; ")}</strong>, where both choices are best replies.</p>`
-      : `<p>No cell has two stars: in every cell, one side would rather switch.</p>`);
+      ? `<p><strong>Equilibrium (gold cell):</strong> ${eq.map(([r, c]) => `${PRO[r]} and ${POL[c]}`).join("; ")}. Each choice is a best reply to the other.</p>`
+      : `<p>No cell has two stars. In every cell, one side would change its choice.</p>`);
     lines.push(`<p class="lesson">${SCEN[k].matrixMeaning}</p>`);
   }
   return `<details class="sol" data-open="m-${k}"${st.step || openSol.has("m-" + k) ? " open" : ""}><summary>Show the full solution</summary>
@@ -371,29 +347,21 @@ function solutionMatrix(k) {
     </div><div class="steps">${lines.join("")}</div></details>`;
 }
 
-/* ---------- Part 2: trees ---------- */
+/* ---------- Part 2: tree ---------- */
 function renderTree(k) {
   const S = SCEN[k], st = tState[k], sol = treeSolve(k);
-  // which branches to mark
-  let play = null; // [firstMove, reply] actually played after Reveal
-  if (st.revealed) {
-    if (role === "pro") play = [st.move, sol.pol[st.move]];
-    else { const f = proAgainstPlan(k, st.plan); play = [f, st.plan[f]]; }
-  }
-  const firstCls = i => {
-    const c = [];
-    if (st.step >= 2) c.push(sol.pro === i ? (st.step >= 3 ? "path" : "chosen") : "faded");
-    return c.join(" ");
-  };
+  let play = null; // [first move, response] after Reveal
+  if (st.revealed) play = role === "pro" ? [st.move, sol.pol[st.move]] : [st.move, st.resp];
+  const firstCls = i => st.step >= 2 ? (sol.pro === i ? (st.step >= 3 ? "path" : "chosen") : "faded") : "";
   const replyCls = (i, j) => {
     const c = [];
     if (st.step >= 1) c.push(sol.pol[i] === j ? (st.step >= 3 && sol.pro === i ? "path" : "chosen") : "faded");
     if (play && play[0] === i && play[1] === j) c.push("play");
     return c.join(" ");
   };
-  let t = `<div class="tree"><div class="node pr">Protesters move first</div><ul>`;
+  let t = `<div class="tree"><div class="node pr">The protesters move first</div><ul>`;
   for (let i = 0; i < 2; i++) {
-    t += `<li class="${firstCls(i)}"><span class="act">${PRO[i]}</span><div class="sub"><div class="node po">Police respond</div><ul>`;
+    t += `<li class="${firstCls(i)}"><span class="act">${PRO[i]}</span><div class="sub"><div class="node po">The police respond</div><ul>`;
     for (let j = 0; j < 2; j++) {
       const cell = S.cells[i][j];
       t += `<li class="${replyCls(i, j)}"><span class="act">${POL[j]}</span><div class="leaf">${outcome(cell)}${labels(cell.p)}</div></li>`;
@@ -402,60 +370,53 @@ function renderTree(k) {
   }
   t += `</ul></div>`;
 
-  // choice
-  let ch = `<div class="choose">`;
+  let ch = `<div class="choose">`, ready;
   if (role === "pro") {
-    ch += `<div class="q">Your first move as the protesters:</div><div class="big">` +
-      PRO.map((m, i) => `<button type="button" class="${st.move === i ? "sel pr" : ""}" data-tmove="${k}" data-i="${i}" aria-pressed="${st.move === i}"${st.revealed ? " disabled" : ""}>${m}</button>`).join("") + `</div>`;
+    ch += `<div class="q">Your first move as the protesters</div><div class="big">` + bigButtons(PRO, st.move, "pr", "data-tmove", st.revealed) + `</div>`;
+    ready = st.move !== null;
+    ch += st.revealed ? "" : `<p class="small">Choose a move and show your screen to the police player. Select Reveal after the police player has responded.</p>`;
   } else {
-    ch += `<div class="q">The protesters move first. Decide now how you will respond:</div><div class="plan">` +
-      [0, 1].map(i => `<div class="row"><div class="small">If they choose ${lc(PRO[i])}:</div><div class="big">` +
-        POL.map((m, j) => `<button type="button" class="${st.plan[i] === j ? "sel po" : ""}" data-tplan="${k}" data-i="${i}" data-j="${j}" aria-pressed="${st.plan[i] === j}"${st.revealed ? " disabled" : ""}>${m}</button>`).join("") +
-        `</div></div>`).join("") + `</div>`;
+    ch += `<div class="q">1. The move shown on the protester’s screen</div><div class="big">` + bigButtons(PRO, st.move, "pr", "data-tmove", st.revealed) + `</div>` +
+      `<div class="q">2. Your response as the police</div><div class="big">` + bigButtons(POL, st.resp, "po", "data-tresp", st.revealed || st.move === null) + `</div>`;
+    ready = st.move !== null && st.resp !== null;
+    ch += ready || st.revealed ? "" : `<p class="small">Wait for the protester’s move. Then choose your response and select Reveal.</p>`;
   }
-  const ready = role === "pro" ? st.move !== null : st.plan[0] !== null && st.plan[1] !== null;
   ch += `<div class="toolbar"><button type="button" class="btn" data-treveal="${k}"${!ready || st.revealed ? " disabled" : ""}>Reveal</button>` +
-    (st.revealed ? `<button type="button" class="ghost" data-tagain="${k}">Play again</button>` : "") + `</div>` +
-    (!ready ? `<p class="small">Choose without talking. Then show each other your screens and press Reveal.</p>` : "") + `</div>`;
+    (st.revealed ? `<button type="button" class="ghost" data-tagain="${k}">Play again</button>` : "") + `</div></div>`;
 
-  // reveal
   let rv = "";
   if (st.revealed) {
     const [i, j] = play, cell = S.cells[i][j];
+    const eqPath = `${PRO[sol.pro]}, then ${POL[sol.pol[sol.pro]]}`;
     rv = `<div class="reveal">`;
     if (role === "pro") {
-      rv += `<p>You chose <strong>${PROa[i]}</strong>. The police see it and give their best reply: they <strong>${POLv[j]}</strong>.</p>`;
+      rv += `<p>You chose <strong>${PROa[i]}</strong>. The police’s best reply is <strong>to ${POLv[j]}</strong>.</p>` +
+        `<p>Outcome: ${cell.what} ${cell.pub}</p><p>${labels(cell.p)}</p>` +
+        (sol.pro === i
+          ? `<p><span class="yes">This is the best first move.</span> After ${PROa[1 - i]}, the police would ${POLv[sol.pol[1 - i]]}, which ranks ${fmt(P(k, 1 - i, sol.pol[1 - i])[0])} for the protesters. The equilibrium path is ${eqPath}.</p>`
+          : `<p><span class="no">This is not the best first move.</span> After ${PROa[sol.pro]}, the police would ${POLv[sol.pol[sol.pro]]}, which ranks ${fmt(P(k, sol.pro, sol.pol[sol.pro])[0])} for the protesters instead of ${fmt(cell.p[0])}. The equilibrium path is ${eqPath}.</p>`);
     } else {
-      rv += `<p>Your plan: after a peaceful march, <strong>${POLv[st.plan[0]]}</strong>; after disruptive action, <strong>${POLv[st.plan[1]]}</strong>. Knowing your plan, the protesters’ best first move is <strong>${PROa[i]}</strong>.</p>`;
-    }
-    rv += `<p>What happens: ${cell.what} ${cell.pub}</p><p>${labels(cell.p)}</p>`;
-    const eqPath = `${PRO[sol.pro]} → ${POL[sol.pol[sol.pro]]}`;
-    if (role === "pro") {
-      rv += sol.pro === i
-        ? `<p><span class="yes">That was your best first move.</span> The equilibrium path is ${eqPath}.</p>`
-        : `<p><span class="no">Not your best first move.</span> With ${PROa[sol.pro]}, the police would ${POLv[sol.pol[sol.pro]]} and you would get ${fmt(P(k, sol.pro, sol.pol[sol.pro])[0])} instead of ${fmt(cell.p[0])}. The equilibrium path is ${eqPath}.</p>`;
-    } else {
-      const okPlan = st.plan[0] === sol.pol[0] && st.plan[1] === sol.pol[1];
-      rv += okPlan
-        ? `<p><span class="yes">Your plan is a best reply at every step.</span> The equilibrium path is ${eqPath}.</p>`
-        : `<p><span class="no">Your plan is not a best reply at every step.</span> Your best replies are to ${POLv[sol.pol[0]]} after a peaceful march and to ${POLv[sol.pol[1]]} after disruptive action. The equilibrium path is ${eqPath}.</p>`;
+      rv += `<p>The protesters chose <strong>${PROa[i]}</strong>. You chose <strong>to ${POLv[j]}</strong>.</p>` +
+        `<p>Outcome: ${cell.what} ${cell.pub}</p><p>${labels(cell.p)}</p>` +
+        (sol.pol[i] === j
+          ? `<p><span class="yes">Your response is the best reply to ${PROa[i]}.</span> The equilibrium path is ${eqPath}.</p>`
+          : `<p><span class="no">Your response is not the best reply to ${PROa[i]}.</span> To ${POLv[sol.pol[i]]} would rank ${fmt(P(k, i, sol.pol[i])[1])} for the police instead of ${fmt(cell.p[1])}. The equilibrium path is ${eqPath}.</p>`);
     }
     rv += `</div>`;
   }
 
-  // solution
   const lines = [];
   if (st.step >= 1) lines.push(`<p><strong style="color:var(--blue)">1. Start at the end: the police reply.</strong> ` + [0, 1].map(i =>
-    `After ${PROa[i]}: facilitating is ${fmt(P(k, i, 0)[1])}, cracking down is ${fmt(P(k, i, 1)[1])}, so they <strong>${POLv[sol.pol[i]]}</strong>.`).join(" ") + `</p>`);
-  if (st.step >= 2) lines.push(`<p><strong style="color:var(--orange)">2. The protesters look ahead.</strong> A peaceful march leads to ${fmt(P(k, 0, sol.pol[0])[0])} for them, disruptive action to ${fmt(P(k, 1, sol.pol[1])[0])}, so they choose <strong>${PROa[sol.pro]}</strong>.</p>`);
+    `After ${PROa[i]}, facilitating ranks ${fmt(P(k, i, 0)[1])} and cracking down ranks ${fmt(P(k, i, 1)[1])} for the police, so they ${POLv[sol.pol[i]]}.`).join(" ") + `</p>`);
+  if (st.step >= 2) lines.push(`<p><strong style="color:var(--orange)">2. The protesters look ahead.</strong> A peaceful march leads to ${fmt(P(k, 0, sol.pol[0])[0])} for them and disruptive action leads to ${fmt(P(k, 1, sol.pol[1])[0])}, so they choose ${PROa[sol.pro]}.</p>`);
   if (st.step >= 3) {
-    lines.push(`<p><strong>3. Equilibrium path:</strong> ${PRO[sol.pro]} → ${POL[sol.pol[sol.pro]]}. ${labels(P(k, sol.pro, sol.pol[sol.pro]))}</p>`);
+    lines.push(`<p><strong>3. Equilibrium path:</strong> ${PRO[sol.pro]}, then ${POL[sol.pol[sol.pro]]}. ${labels(P(k, sol.pro, sol.pol[sol.pro]))}</p>`);
     lines.push(`<p class="lesson">${S.treeLesson}</p>`);
   }
   const solHTML = `<details class="sol" data-open="t-${k}"${st.step || openSol.has("t-" + k) ? " open" : ""}><summary>Show the full solution</summary>
     <div class="toolbar">
-      <button type="button" class="ghost" data-tstep="${k}" data-s="1">1. Police reply</button>
-      <button type="button" class="ghost" data-tstep="${k}" data-s="2">2. Protesters look ahead</button>
+      <button type="button" class="ghost" data-tstep="${k}" data-s="1">1. The police reply</button>
+      <button type="button" class="ghost" data-tstep="${k}" data-s="2">2. The protesters look ahead</button>
       <button type="button" class="ghost" data-tstep="${k}" data-s="3">3. Equilibrium path</button>
       <button type="button" class="ghost" data-tstep="${k}" data-s="0">Reset</button>
     </div><div class="steps">${lines.join("")}</div></details>`;
@@ -465,21 +426,18 @@ function renderTree(k) {
 
 /* ---------- Quiz ---------- */
 const QUIZ = [
-  {q: "Climate march, same time: the police escort the march. What is the protesters’ best reply?",
+  {q: "Climate march, same time. The police escort the march. What is the protesters’ best reply?",
    o: ["A peaceful march", "Disruptive action"], a: 0,
-   fb: "A peaceful march with an escort is Best for the protesters; blocking the center is only Bad."},
-  {q: "Road blockade, same time: where do the two sides end up?",
-   o: ["A quiet march that the police allow", "A blockade cleared by force, Bad for both"], a: 1,
-   fb: "Blocking is better for the group whatever the police do, and the police’s best reply to a blockade is to clear it. Both would prefer the quiet march, but neither can get there alone."},
-  {q: "Cat and mouse: what happens?",
+   fb: "A peaceful march with an escort ranks Best for the protesters. Blocking the city center ranks Bad."},
+  {q: "Road blockade, same time. Which outcome do the two sides reach?",
+   o: ["A quiet march that the police allow", "A blockade cleared by force, which ranks Bad for both"], a: 1,
+   fb: "Blocking is the group’s best choice whatever the police do, and the police’s best reply to a blockade is to clear it. Both sides rank the quiet march higher, but neither can reach it alone."},
+  {q: "Bonus round, cat and mouse. What happens?",
    o: ["Both sides settle on a peaceful march with an escort", "No pair of choices that both sides would stick to: each side wants to keep the other guessing"], a: 1,
-   fb: "The group wants to surprise the police, and the police want to be ready for what the group does, so someone always wants to switch."},
-  {q: "Climate march, one after the other: why do the police escort the march?",
-   o: ["Because cracking down on a peaceful march would turn the public against them", "Because they are not allowed to crack down"], a: 0,
-   fb: "Cracking down on a peaceful march is the police’s Worst outcome, because the public turns against them."},
-  {q: "Road blockade, one after the other: what changes when the protesters move first?",
-   o: ["Nothing: they still block the road", "They see that a blockade would be cleared, so they march, and both sides do better"], a: 1,
-   fb: "Moving first, the group can look ahead: blocking leads to Bad, a quiet march to Good. Both sides end up better off than when they choose at the same time."}
+   fb: "The group wants to find the police unprepared, and the police want to be ready for the group’s choice. In every cell, one side would change its choice."},
+  {q: "Road blockade, one after the other. What changes when the protesters move first?",
+   o: ["Nothing. The group still blocks the road.", "The group sees that a blockade would be cleared by force. It marches, and both sides do better."], a: 1,
+   fb: "Moving first, the group looks ahead. A blockade leads to Bad and a quiet march to Good, so the group marches, and both sides end better off than in Part 1."}
 ];
 let answered = 0, right = 0;
 function renderQuiz() {
@@ -493,40 +451,39 @@ $("quiz").addEventListener("click", e => {
   if (group[0].disabled) return;
   group.forEach(g => { g.disabled = true; if (+g.dataset.j === x.a) g.classList.add("right"); });
   if (j !== x.a) b.classList.add("wrong"); else right++;
-  $("fb" + i).innerHTML = (j === x.a ? "<strong>Right.</strong> " : "<strong>Not quite.</strong> ") + x.fb;
-  if (++answered === QUIZ.length) { $("score").hidden = false; $("score").textContent = `You got ${right} out of ${QUIZ.length}.`; }
+  $("fb" + i).innerHTML = (j === x.a ? "<strong>Correct.</strong> " : "<strong>Incorrect.</strong> ") + x.fb;
+  if (++answered === QUIZ.length) { $("score").hidden = false; $("score").textContent = `Score: ${right} of ${QUIZ.length}.`; }
 });
 $("qReset").onclick = renderQuiz;
 
 /* ---------- Rendering and events ---------- */
 function renderAll() {
-  $("matrices").innerHTML = ["cm", "rb", "cat"].map(renderMatrix).join("");
-  $("trees").innerHTML = ["cm", "rb"].map(renderTree).join("");
+  $("matrices").innerHTML = renderMatrix("cm") + renderMatrix("rb") + `<h3 class="bonus">Bonus round</h3>` + renderMatrix("cat");
+  $("trees").innerHTML = TREES.map(renderTree).join("");
 }
 function rerender(id, html) { const el = $(id); if (el) el.outerHTML = html; }
 
 $("matrices").addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
-  const d = b.dataset, k = d.k || d.reveal || d.again || d.partner || d.mstep;
+  const d = b.dataset, box = b.closest(".big");
+  const k = (box && box.dataset.k) || d.reveal || d.again || d.mstep;
   if (!k) return;
   const st = mState[k];
-  if (d.k) st.choice = +d.i;
-  else if (d.reveal) { st.revealed = true; st.partner = null; }
-  else if (d.again) Object.assign(st, {choice: null, revealed: false, partner: null});
-  else if (d.partner) st.partner = +d.i;
+  if (box) st.choice = +d.i;
+  else if (d.reveal) st.revealed = true;
+  else if (d.again) Object.assign(st, {choice: null, revealed: false});
   else if (d.mstep) st.step = +d.s;
   rerender("m-" + k, renderMatrix(k));
 });
 $("trees").addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
-  const d = b.dataset, k = d.tmove || d.tplan || d.treveal || d.tagain || d.tstep;
-  if (!k) return;
-  const st = tState[k];
-  if (d.tmove) st.move = +d.i;
-  else if (d.tplan) st.plan[+d.i] = +d.j;
+  const d = b.dataset, k = "rb", st = tState[k];
+  if (d.tmove !== undefined) { st.move = +d.tmove; }
+  else if (d.tresp !== undefined) { st.resp = +d.tresp; }
   else if (d.treveal) st.revealed = true;
-  else if (d.tagain) Object.assign(st, {move: null, plan: [null, null], revealed: false});
+  else if (d.tagain) Object.assign(st, {move: null, resp: null, revealed: false});
   else if (d.tstep) st.step = +d.s;
+  else return;
   rerender("t-" + k, renderTree(k));
 });
 $("switchRole").onclick = () => setRole(role === "pro" ? "pol" : "pro");
