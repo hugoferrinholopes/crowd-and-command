@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crowd and Command — Hugo Ferrinho Lopes</title>
+<meta name="description" content="A small game between protesters and police: play the matrix, play the sequence, and find the equilibrium step by step. By Hugo Ferrinho Lopes for GOVT 3421, Youth and Politics, Georgetown University.">
+<meta name="author" content="Hugo Ferrinho Lopes">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Crowd and Command — Hugo Ferrinho Lopes">
+<meta property="og:description" content="A small game between protesters and police, for GOVT 3421, Youth and Politics, Georgetown University.">
+<meta property="og:url" content="https://hugoferrinholopes.github.io/crowd-and-command/">
+<style>
+:root{
+  --blue:#004676; --light:#4393C3; --orange:#BE4B14; --grey:#5F6368;
+  --ink:#1b1f23; --line:#d9dde1; --pale:#f3f6f9; --paleo:#fbf1ec; --gold:#fff4cc; --bg:#ffffff;
+}
+*{box-sizing:border-box}
+html{font-size:112.5%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  line-height:1.5}
+main{max-width:52rem;margin:0 auto;padding:0 1rem 4rem}
+h1{font-size:1.9rem;line-height:1.2;color:var(--blue);margin:1.6rem 0 .3rem}
+h2{font-size:1.25rem;color:var(--blue);margin:1.6rem 0 .5rem}
+h3{font-size:1rem;margin:0 0 .3rem}
+p{margin:.5rem 0}
+.lede{font-size:1.08rem;color:var(--grey)}
+.small{font-size:.85rem;color:var(--grey)}
+.pr{color:var(--orange);font-weight:700}
+.po{color:var(--blue);font-weight:700}
+.pu{color:var(--grey);font-weight:700}
+button{font:inherit;background:var(--blue);color:#fff;border:0;border-radius:.4rem;padding:.5rem .85rem;cursor:pointer;min-height:44px}
+button.secondary{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+button.on{background:var(--orange);color:#fff;border-color:var(--orange)}
+button:focus-visible,select:focus-visible,[role=tab]:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+select{font:inherit;min-height:36px;border:1px solid var(--line);border-radius:.3rem;background:#fff}
+/* key ideas */
+.ideas{display:grid;grid-template-columns:1fr;gap:.5rem;margin:1rem 0}
+@media(min-width:40rem){.ideas{grid-template-columns:repeat(5,1fr)}}
+.idea{border:1px solid var(--line);border-top:4px solid var(--light);border-radius:.5rem;padding:.5rem .6rem;background:#fff;font-size:.88rem}
+.idea strong{display:block;color:var(--blue);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+/* tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:.3rem;border-bottom:2px solid var(--line);margin:1.4rem 0 1rem}
+[role=tab]{background:transparent;color:var(--grey);border:0;border-bottom:3px solid transparent;border-radius:0;padding:.5rem .7rem;margin-bottom:-2px;font-weight:600}
+[role=tab][aria-selected=true]{color:var(--blue);border-bottom-color:var(--orange)}
+[role=tabpanel][hidden]{display:none}
+.toolbar{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0}
+.label{font-size:.8rem;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:.04em;margin:.8rem 0 .2rem}
+.note{border-left:4px solid var(--orange);background:var(--paleo);padding:.5rem .8rem;margin:.8rem 0;font-size:.92rem}
+/* matrix */
+.matrixwrap{overflow-x:auto;margin:.8rem 0}
+table.matrix{border-collapse:separate;border-spacing:.35rem;margin:0 auto}
+.matrix th{font-size:.92rem;font-weight:700;text-align:center;padding:.2rem .4rem}
+.matrix th.rowh{text-align:right;color:var(--orange)}
+.matrix th.colh{color:var(--blue)}
+.matrix th.player{font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
+.matrix th.rowh.player{writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;padding:.2rem 0}
+.matrix td{min-width:7.2rem;height:4.4rem;text-align:center;vertical-align:middle;border:2px solid var(--line);border-radius:.5rem;background:#fff;font-size:1.25rem;font-variant-numeric:tabular-nums;position:relative;transition:background .2s}
+.matrix td.eq{background:var(--gold);border-color:#c79a00;box-shadow:0 0 0 2px #c79a00 inset}
+.pay{display:inline-block;min-width:1.6rem;padding:0 .15rem;border-radius:.3rem}
+.pay.br-pr{background:var(--paleo);outline:2px solid var(--orange)}
+.pay.br-po{background:#e3edf5;outline:2px solid var(--blue)}
+.star{font-size:.8rem;vertical-align:super}
+.matrix select{font-size:1rem;width:3.1rem}
+.steps{min-height:1.5rem;font-size:.95rem}
+.steps p{margin:.3rem 0}
+.result{border:2px solid var(--blue);border-radius:.5rem;padding:.6rem .8rem;margin:.8rem 0;background:#fff}
+/* tree */
+.treewrap{border:1px solid var(--line);border-radius:.6rem;background:#fff;padding:.4rem;margin:.8rem 0;overflow-x:auto}
+svg.tree{width:100%;min-width:560px;height:auto;display:block}
+.swipe{display:none}
+@media(max-width:40rem){.swipe{display:block}}
+.tree .edge{stroke:#9aa0a6;stroke-width:2.5;fill:none;transition:all .25s}
+.tree .edge.chosen{stroke:var(--ink);stroke-width:5}
+.tree .edge.faded{stroke:#d9dde1;stroke-dasharray:6 5}
+.tree .edge.path{stroke:var(--orange);stroke-width:7}
+.tree .elab{font-size:16px;font-weight:400;fill:var(--grey)}
+.tree .nlab{font-size:16px;font-weight:700}
+.tree .leaf{font-size:18px;font-weight:700}
+.tree .leafbox{fill:#fff;stroke:none}
+.tree .leafbox.path{fill:var(--gold);stroke:#c79a00;stroke-width:2}
+.tree .solved{font-size:13px;font-weight:700}
+/* quiz */
+.q{border:1px solid var(--line);border-radius:.6rem;padding:.7rem .8rem;margin:.8rem 0;background:#fff}
+.q .opts{display:grid;gap:.4rem;margin-top:.4rem}
+.q button.opt{background:#fff;color:var(--ink);border:1px solid var(--line);text-align:left}
+.q button.opt:hover{border-color:var(--blue)}
+.q button.right{background:#e6f2ea;border-color:#2e7d4f}
+.q button.wrong{background:var(--paleo);border-color:var(--orange)}
+.q .fb{font-size:.92rem;margin-top:.4rem}
+footer.site{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--grey);font-size:.85rem}
+footer.site a{color:var(--grey)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-width:34rem){table.matrix{border-spacing:.25rem} .matrix td{min-width:4.5rem;height:3.8rem;font-size:1.05rem} .matrix th{font-size:.82rem} .matrix th.rowh{max-width:5.6rem} .matrix select{width:2.8rem;font-size:.95rem}}
+@media(max-width:26rem){html{font-size:106%} h1{font-size:1.6rem} [role=tab]{padding:.45rem .45rem}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Crowd and Command</h1>
+  <p class="lede">A small game between <span class="pr">protesters</span> and the <span class="po">police</span>. Each side chooses, and each cares about what the other does.</p>
+</header>
+
+<section aria-label="Key ideas" class="ideas">
+  <div class="idea"><strong>Player</strong>Someone who makes a choice: here, the protesters and the police.</div>
+  <div class="idea"><strong>Strategy</strong>One of the choices a player can make.</div>
+  <div class="idea"><strong>Payoff</strong>How good an outcome is for a player. Here, a rank: higher is better.</div>
+  <div class="idea"><strong>Best reply</strong>The choice that gives you the most, given what the other side does.</div>
+  <div class="idea"><strong>Equilibrium</strong>Choices where no one gains by changing their own choice alone.</div>
+</section>
+
+<div class="tabs" role="tablist" aria-label="Parts of the game">
+  <button role="tab" id="tab-m" aria-controls="panel-m" aria-selected="true">1. Play the matrix</button>
+  <button role="tab" id="tab-t" aria-controls="panel-t" aria-selected="false" tabindex="-1">2. Play the sequence</button>
+  <button role="tab" id="tab-q" aria-controls="panel-q" aria-selected="false" tabindex="-1">3. Quiz</button>
+</div>
+
+<!-- ============ 1. MATRIX ============ -->
+<section role="tabpanel" id="panel-m" aria-labelledby="tab-m">
+  <h2>Both sides choose at the same time</h2>
+  <p>The <span class="pr">protesters</span> choose rows; the <span class="po">police</span> choose columns. Each cell shows the payoff to the <span class="pr">protesters</span> first and to the <span class="po">police</span> second.</p>
+  <div class="label">Scenario</div>
+  <div class="toolbar" id="scenarios"></div>
+  <p class="small" id="scenarioText"></p>
+  <div class="matrixwrap"><table class="matrix" id="matrix" aria-describedby="payNote"></table></div>
+  <p class="small" id="payNote">Payoffs are illustrative ranks, not measurements: 4 = best, 1 = worst for that player.</p>
+  <div class="label">Solve step by step</div>
+  <div class="toolbar">
+    <button type="button" class="secondary" id="bPr">Protesters’ best replies</button>
+    <button type="button" class="secondary" id="bPo">Police’s best replies</button>
+    <button type="button" class="secondary" id="bEq">Equilibrium</button>
+    <button type="button" class="secondary" id="bRe">Reset</button>
+  </div>
+  <div class="steps" id="mSteps" aria-live="polite"></div>
+</section>
+
+<!-- ============ 2. TREE ============ -->
+<section role="tabpanel" id="panel-t" aria-labelledby="tab-t" hidden>
+  <h2>One side moves after the other</h2>
+  <p>Now the <span class="pr">protesters</span> move first, the <span class="po">police</span> respond, and then the <span class="pu">public</span> reacts: it supports the protesters or turns against them. Each player knows what came before.</p>
+  <div class="label">Scenario</div>
+  <div class="toolbar" id="tScenarios"></div>
+  <p class="small swipe">Swipe sideways inside the box to see the whole tree.</p>
+  <div class="treewrap"><svg class="tree" id="tree" viewBox="0 0 650 480" role="img" aria-label="Game tree: protesters, then police, then the public"></svg></div>
+  <p class="small">At the end of each branch: payoffs to the <span class="pr">protesters</span>, the <span class="po">police</span> and the <span class="pu">public</span>. Illustrative ranks: for the protesters and the police, 8 = best and 1 = worst; for the public, 2 marks the reaction it prefers.</p>
+  <div class="label">Solve backward, from the end</div>
+  <div class="toolbar">
+    <button type="button" class="secondary" id="t1">1. Final nodes</button>
+    <button type="button" class="secondary" id="t2">2. Police choice</button>
+    <button type="button" class="secondary" id="t3">3. Protesters’ choice</button>
+    <button type="button" class="secondary" id="t4">4. Equilibrium path</button>
+    <button type="button" class="secondary" id="t0">Reset</button>
+  </div>
+  <div class="steps" id="tSteps" aria-live="polite"></div>
+</section>
+
+<!-- ============ 3. QUIZ ============ -->
+<section role="tabpanel" id="panel-q" aria-labelledby="tab-q" hidden>
+  <h2>Five quick questions</h2>
+  <div id="quiz"></div>
+  <p id="score" class="result" hidden></p>
+  <div class="toolbar"><button type="button" class="secondary" id="qReset">Start again</button></div>
+</section>
+
+<footer class="site">
+  <p>Built by Hugo Ferrinho Lopes for GOVT 3421, <em>Youth and Politics</em>, Department of Government, Georgetown University, Fall 2026 — <a href="https://hugoferrinholopes.github.io/">hugoferrinholopes.github.io</a></p>
+</footer>
+</main>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+
+/* ---------------- Tabs ---------------- */
+const tabs = [...document.querySelectorAll("[role=tab]")];
+function selectTab(t) {
+  tabs.forEach(x => {
+    const on = x === t;
+    x.setAttribute("aria-selected", on);
+    x.tabIndex = on ? 0 : -1;
+    $(x.getAttribute("aria-controls")).hidden = !on;
+  });
+}
+tabs.forEach((t, i) => {
+  t.addEventListener("click", () => selectTab(t));
+  t.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+      const n = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+      selectTab(n); n.focus();
+    }
+  });
+});
+
+/* ---------------- 1. Matrix ---------------- */
+const ROWS = ["Peaceful march", "Disruptive action"];   // protesters
+const COLS = ["Facilitate", "Crack down"];               // police
+// pay[r][c] = [protesters, police]
+const PRESETS = {
+  march: {name: "Climate march",
+    text: "A large, popular school strike. The protesters care most about keeping the public on their side.",
+    pay: [[[4, 4], [2, 2]], [[3, 1], [1, 3]]],
+    meaning: "Marching is best for the protesters whatever the police do, and the police then prefer to facilitate. The calm outcome is stable."},
+  block: {name: "Road blockade",
+    text: "A small group that needs attention. Blocking a road is always worth more to it than a march nobody notices.",
+    pay: [[[3, 4], [1, 2]], [[4, 1], [2, 3]]],
+    meaning: "Disruption is best for the protesters whatever the police do, so the police crack down, even though both sides would prefer a facilitated march."},
+  cat: {name: "Cat and mouse",
+    text: "Each side wants to do what the other does not expect.",
+    pay: [[[3, 4], [2, 1]], [[4, 2], [1, 3]]],
+    meaning: "Every cell leaves one side wanting to switch. There is no stable pair of choices, and the game keeps moving."}
+};
+let mKey = "march", pay = clone(PRESETS.march.pay), mStep = 0;
+function clone(p) { return p.map(r => r.map(c => c.slice())); }
+
+function prBR() { // protesters' best replies: for each column, best row(s)
+  const s = new Set();
+  for (let c = 0; c < 2; c++) {
+    const m = Math.max(pay[0][c][0], pay[1][c][0]);
+    for (let r = 0; r < 2; r++) if (pay[r][c][0] === m) s.add(r + "," + c);
+  }
+  return s;
+}
+function poBR() { // police's best replies: for each row, best column(s)
+  const s = new Set();
+  for (let r = 0; r < 2; r++) {
+    const m = Math.max(pay[r][0][1], pay[r][1][1]);
+    for (let c = 0; c < 2; c++) if (pay[r][c][1] === m) s.add(r + "," + c);
+  }
+  return s;
+}
+function equilibria() { const a = prBR(), b = poBR(); return [...a].filter(x => b.has(x)); }
+
+function renderScenarios() {
+  const keys = [...Object.keys(PRESETS), "custom"];
+  $("scenarios").innerHTML = keys.map(k => `<button type="button" class="secondary${k === mKey ? " on" : ""}" data-k="${k}" aria-pressed="${k === mKey}">${k === "custom" ? "Custom" : PRESETS[k].name}</button>`).join("");
+  $("scenarios").querySelectorAll("button").forEach(b => b.onclick = () => {
+    if (b.dataset.k !== "custom") pay = clone(PRESETS[b.dataset.k].pay);
+    mKey = b.dataset.k; mStep = 0; renderScenarios(); renderMatrix();
+  });
+  $("scenarioText").textContent = mKey === "custom" ? "Set your own ranks in each cell, from 1 (worst) to 4 (best). Ties are allowed." : PRESETS[mKey].text;
+}
+
+function cellHTML(r, c) {
+  const [a, b] = pay[r][c];
+  const brA = mStep >= 1 && prBR().has(r + "," + c);
+  const brB = mStep >= 2 && poBR().has(r + "," + c);
+  if (mKey === "custom") {
+    const sel = (v, who) => `<select aria-label="${who} payoff, ${ROWS[r]} and ${COLS[c]}" data-r="${r}" data-c="${c}" data-w="${who === "Protesters" ? 0 : 1}">${[1, 2, 3, 4].map(n => `<option${n === v ? " selected" : ""}>${n}</option>`).join("")}</select>`;
+    return `<span class="pay pr${brA ? " br-pr" : ""}">${sel(a, "Protesters")}</span> , <span class="pay po${brB ? " br-po" : ""}">${sel(b, "Police")}</span>`;
+  }
+  return `<span class="pay pr${brA ? " br-pr" : ""}">${brA ? '<span class="star" aria-hidden="true">★</span>' : ""}${a}</span> , <span class="pay po${brB ? " br-po" : ""}">${b}${brB ? '<span class="star" aria-hidden="true">★</span>' : ""}</span>`;
+}
+
+function renderMatrix() {
+  const eq = mStep >= 3 ? new Set(equilibria()) : new Set();
+  let h = `<tr><th></th><th></th><th colspan="2" class="colh player">Police</th></tr>
+    <tr><th></th><th></th>${COLS.map(c => `<th class="colh" scope="col">${c}</th>`).join("")}</tr>`;
+  for (let r = 0; r < 2; r++) {
+    h += `<tr>${r === 0 ? '<th rowspan="2" class="rowh player" scope="rowgroup">Protesters</th>' : ""}<th class="rowh" scope="row">${ROWS[r]}</th>`;
+    for (let c = 0; c < 2; c++) h += `<td class="${eq.has(r + "," + c) ? "eq" : ""}">${cellHTML(r, c)}</td>`;
+    h += "</tr>";
+  }
+  $("matrix").innerHTML = h;
+  $("matrix").querySelectorAll("select").forEach(s => s.onchange = () => {
+    pay[+s.dataset.r][+s.dataset.c][+s.dataset.w] = +s.value; mStep = 0; renderMatrix();
+  });
+  renderMSteps();
+}
+
+function renderMSteps() {
+  const out = [];
+  if (mStep >= 1) {
+    out.push(`<p><span class="pr">Protesters’ best replies.</span> ` + COLS.map((col, c) => {
+      const a = pay[0][c][0], b = pay[1][c][0];
+      const best = a > b ? ROWS[0] : b > a ? ROWS[1] : "either (a tie)";
+      return `If the police ${col.toLowerCase()}, ${ROWS[0].toLowerCase()} gives ${a} and ${ROWS[1].toLowerCase()} gives ${b}: best reply, <strong>${best.toLowerCase()}</strong>.`;
+    }).join(" ") + `</p>`);
+  }
+  if (mStep >= 2) {
+    out.push(`<p><span class="po">Police’s best replies.</span> ` + ROWS.map((row, r) => {
+      const a = pay[r][0][1], b = pay[r][1][1];
+      const best = a > b ? COLS[0] : b > a ? COLS[1] : "either (a tie)";
+      return `If the protesters choose ${row.toLowerCase()}, facilitating gives ${a} and cracking down gives ${b}: best reply, <strong>${best.toLowerCase()}</strong>.`;
+    }).join(" ") + `</p>`);
+  }
+  if (mStep >= 3) {
+    const eq = equilibria();
+    let s;
+    if (eq.length === 0) s = "No cell has both marks: in every cell, one side would rather switch. There is no equilibrium in these simple choices.";
+    else s = (eq.length === 1 ? "Equilibrium: " : "Equilibria: ") + eq.map(k => { const [r, c] = k.split(",").map(Number); return `<strong>${ROWS[r].toLowerCase()} and ${COLS[c].toLowerCase()}</strong> (${pay[r][c][0]}, ${pay[r][c][1]})`; }).join("; ") + ". Both sides are playing a best reply, so neither gains by switching alone.";
+    out.push(`<p>${s}</p>`);
+    out.push(`<p class="result">${meaning(eq)}</p>`);
+  }
+  $("mSteps").innerHTML = out.join("");
+}
+
+function meaning(eq) {
+  if (mKey !== "custom") return PRESETS[mKey].meaning;
+  if (eq.length === 0) return "No outcome is stable: whatever happens, one side wants to change course.";
+  if (eq.length > 1) return "More than one outcome is stable, so what happens depends on what each side expects the other to do.";
+  const [r, c] = eq[0].split(",").map(Number), [a, b] = pay[r][c];
+  for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++)
+    if (pay[i][j][0] > a && pay[i][j][1] > b) return `The outcome is stable, yet both sides would prefer ${ROWS[i].toLowerCase()} and ${COLS[j].toLowerCase()}. Neither can get there by changing its own choice.`;
+  return "The outcome is stable: neither side can do better by changing its own choice.";
+}
+
+$("bPr").onclick = () => { mStep = Math.max(mStep, 1); renderMatrix(); };
+$("bPo").onclick = () => { mStep = Math.max(mStep, 2); renderMatrix(); };
+$("bEq").onclick = () => { mStep = 3; renderMatrix(); };
+$("bRe").onclick = () => { mStep = 0; renderMatrix(); };
+
+/* ---------------- 2. Tree ---------------- */
+// leaves in order: [march|disrupt] x [facilitate|crack down] x [support|turn against]
+// each leaf: [protesters, police, public]
+const TREES = {
+  march: {name: "Climate march", leaves: [
+    [7, 7, 2], [3, 8, 1],  [6, 2, 2], [1, 5, 1],
+    [8, 3, 1], [4, 4, 2],  [5, 1, 1], [2, 6, 2]],
+    meaning: "Expecting the public to back a peaceful march, and the police to facilitate it, the protesters march. Disruption would turn the public against them."},
+  block: {name: "Road blockade", leaves: [
+    [3, 7, 2], [1, 8, 1],  [4, 2, 2], [2, 5, 1],
+    [8, 3, 1], [6, 4, 2],  [7, 1, 1], [5, 6, 2]],
+    meaning: "This group values attention more than approval. It blocks the road knowing that the police will crack down and the public will turn against it."}
+};
+const A1 = ["Peaceful march", "Disruptive action"], A2 = ["Facilitate", "Crack down"], A3 = ["Support", "Turn against"];
+let tKey = "march", tStep = 0;
+
+function solveTree(L) {
+  // public choice at each of 4 nodes (n = 2*i + j)
+  const pub = [0, 1, 2, 3].map(n => L[2 * n][2] >= L[2 * n + 1][2] ? 0 : 1);
+  const val = n => L[2 * n + pub[n]];
+  const pol = [0, 1].map(i => val(2 * i)[1] >= val(2 * i + 1)[1] ? 0 : 1);
+  const val2 = i => val(2 * i + pol[i]);
+  const pro = val2(0)[0] >= val2(1)[0] ? 0 : 1;
+  return {pub, pol, pro, val, val2};
+}
+
+// layout (left to right)
+const X = [100, 235, 370, 455], Y3 = [];
+for (let k = 0; k < 8; k++) Y3.push(32 + k * 58);
+const Y2 = [0, 1, 2, 3].map(n => (Y3[2 * n] + Y3[2 * n + 1]) / 2);
+const Y1 = [0, 1].map(i => (Y2[2 * i] + Y2[2 * i + 1]) / 2);
+const Y0 = (Y1[0] + Y1[1]) / 2;
+
+function renderTree() {
+  const L = TREES[tKey].leaves, S = solveTree(L);
+  const cls = (decided, chosen, onPath) => "edge" + (onPath ? " path" : decided ? (chosen ? " chosen" : " faded") : "");
+  const fin = tStep >= 4;
+  let e = "", lab = "", nodes = "", leaves = "";
+  // label to the left of an edge's midpoint, on the side away from the line
+  const elab = (x1, y1, x2, y2, t) => {
+    const mx = (x1 + x2) / 2, my = (y1 + y2) / 2, up = y2 < y1;
+    return `<text class="elab" x="${mx - 6}" y="${up ? my - 6 : my + 17}" text-anchor="end">${t}</text>`;
+  };
+  for (let i = 0; i < 2; i++) {
+    e += `<line class="${cls(tStep >= 3, S.pro === i, fin && S.pro === i)}" x1="${X[0]}" y1="${Y0}" x2="${X[1]}" y2="${Y1[i]}"/>`;
+    lab += elab(X[0], Y0, X[1], Y1[i], A1[i]);
+  }
+  for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) {
+    const n = 2 * i + j;
+    e += `<line class="${cls(tStep >= 2, S.pol[i] === j, fin && S.pro === i && S.pol[i] === j)}" x1="${X[1]}" y1="${Y1[i]}" x2="${X[2]}" y2="${Y2[n]}"/>`;
+    lab += elab(X[1], Y1[i], X[2], Y2[n], A2[j]);
+  }
+  for (let n = 0; n < 4; n++) for (let k = 0; k < 2; k++) {
+    const leaf = 2 * n + k, i = n >> 1, j = n & 1;
+    const path = fin && S.pro === i && S.pol[i] === j && S.pub[n] === k;
+    e += `<line class="${cls(tStep >= 1, S.pub[n] === k, path)}" x1="${X[2]}" y1="${Y2[n]}" x2="${X[3]}" y2="${Y3[leaf]}"/>`;
+    const [a, b, c] = L[leaf];
+    leaves += `<rect class="leafbox${path ? " path" : ""}" x="${X[3] + 5}" y="${Y3[leaf] - 15}" width="180" height="28" rx="6"/>` +
+      `<text class="leaf" x="${X[3] + 12}" y="${Y3[leaf] + 6}"><tspan class="elab">${A3[k]}</tspan><tspan x="${X[3] + 118}" fill="#BE4B14">${a}</tspan><tspan fill="#5F6368">, </tspan><tspan fill="#004676">${b}</tspan><tspan fill="#5F6368">, ${c}</tspan></text>`;
+  }
+  const v1 = n => tStep >= 1 ? ` (${S.val(n)[0]}, ${S.val(n)[1]})` : "";
+  const v2 = i => tStep >= 2 ? ` (${S.val2(i)[0]}, ${S.val2(i)[1]})` : "";
+  const dot = (x, y, col) => `<circle cx="${x}" cy="${y}" r="9" fill="${col}"/>`;
+  nodes += dot(X[0], Y0, "#BE4B14") + `<text class="nlab" x="${X[0] - 14}" y="${Y0 + 6}" text-anchor="end" fill="#BE4B14">Protesters</text>`;
+  for (let i = 0; i < 2; i++) nodes += dot(X[1], Y1[i], "#004676") + `<text class="nlab" x="${X[1] - 12}" y="${i === 0 ? Y1[i] - 12 : Y1[i] + 24}" text-anchor="end" fill="#004676">Police${v2(i)}</text>`;
+  for (let n = 0; n < 4; n++) nodes += dot(X[2], Y2[n], "#5F6368") + `<text class="nlab" x="${X[2] - 12}" y="${n % 2 === 0 ? Y2[n] - 12 : Y2[n] + 24}" text-anchor="end" fill="#5F6368">Public${v1(n)}</text>`;
+  $("tree").innerHTML = e + lab + leaves + nodes;
+  renderTSteps(L, S);
+}
+
+function renderTSteps(L, S) {
+  const out = [];
+  if (tStep >= 1) out.push(`<p><span class="pu">1. The public moves last.</span> ` + [0, 1, 2, 3].map(n => {
+    const i = n >> 1, j = n & 1;
+    return `After ${A1[i].toLowerCase()} and ${A2[j].toLowerCase()}, it prefers to <strong>${A3[S.pub[n]].toLowerCase()}</strong> (${L[2 * n][2]} against ${L[2 * n + 1][2]}).`;
+  }).join(" ") + `</p>`);
+  if (tStep >= 2) out.push(`<p><span class="po">2. The police know how the public will react.</span> ` + [0, 1].map(i => {
+    const f = S.val(2 * i)[1], c = S.val(2 * i + 1)[1];
+    return `After ${A1[i].toLowerCase()}, facilitating leads to ${f} and cracking down to ${c}: they <strong>${A2[S.pol[i]].toLowerCase()}</strong>.`;
+  }).join(" ") + `</p>`);
+  if (tStep >= 3) {
+    const m = S.val2(0)[0], d = S.val2(1)[0];
+    out.push(`<p><span class="pr">3. The protesters foresee both reactions.</span> A peaceful march leads to ${m}, disruptive action to ${d}: they choose <strong>${A1[S.pro].toLowerCase()}</strong>.</p>`);
+  }
+  if (tStep >= 4) {
+    const i = S.pro, j = S.pol[i], n = 2 * i + j, k = S.pub[n], v = L[2 * n + k];
+    out.push(`<p>4. Equilibrium path: <strong>${A1[i]} → ${A2[j]} → ${A3[k]}</strong>, with payoffs ${v[0]}, ${v[1]} and ${v[2]}. Every player’s choice is a best reply at every point of the tree, including points that are never reached.</p>`);
+    out.push(`<p class="result">${TREES[tKey].meaning}</p>`);
+  }
+  $("tSteps").innerHTML = out.join("");
+}
+
+function renderTScenarios() {
+  $("tScenarios").innerHTML = Object.keys(TREES).map(k => `<button type="button" class="secondary${k === tKey ? " on" : ""}" data-k="${k}" aria-pressed="${k === tKey}">${TREES[k].name}</button>`).join("");
+  $("tScenarios").querySelectorAll("button").forEach(b => b.onclick = () => { tKey = b.dataset.k; tStep = 0; renderTScenarios(); renderTree(); });
+}
+[["t1", 1], ["t2", 2], ["t3", 3], ["t4", 4], ["t0", 0]].forEach(([id, s]) => $(id).onclick = () => { tStep = s === 0 ? 0 : Math.max(tStep, s); if (s === 4) tStep = 4; renderTree(); });
+
+/* ---------------- 3. Quiz ---------------- */
+const QUIZ = [
+  {q: "In the Climate march matrix, the police facilitate. What is the protesters’ best reply?",
+   o: ["Peaceful march", "Disruptive action", "It depends on the public"], a: 0,
+   fb: "With the police facilitating, a peaceful march gives the protesters 4 and disruptive action 3."},
+  {q: "What makes a pair of choices an equilibrium?",
+   o: ["Both players get their best possible payoff", "Neither player gains by changing their own choice alone", "The police and the protesters agree in advance"], a: 1,
+   fb: "An equilibrium only asks that each choice be a best reply to the other. It need not be the best outcome for anyone."},
+  {q: "In the Road blockade matrix, both sides would prefer a facilitated march. Why don’t they get there?",
+   o: ["Because the police always crack down", "Because disruptive action is the protesters’ best reply whatever the police do", "Because the payoffs are ranks"], a: 1,
+   fb: "Disruption beats marching for the protesters in both columns, so they disrupt, and the police’s best reply to disruption is to crack down."},
+  {q: "In backward induction, where do you start?",
+   o: ["With the first mover", "With the player who has the highest payoff", "At the end of the tree, with the last mover"], a: 2,
+   fb: "You first work out what the last mover will do, then use that to work out the choice one step earlier, and so on back to the start."},
+  {q: "In the Road blockade tree, why do the protesters disrupt even though the public turns against them?",
+   o: ["They did not foresee the public’s reaction", "Given how the police and the public react, disrupting still pays them more than marching", "The police force them to"], a: 1,
+   fb: "They foresee everything. Disruption leads to 5 and a march to 3, so disrupting is their best choice."}
+];
+let answered = 0, right = 0;
+function renderQuiz() {
+  answered = 0; right = 0; $("score").hidden = true;
+  $("quiz").innerHTML = QUIZ.map((x, i) => `<div class="q"><h3>${i + 1}. ${x.q}</h3><div class="opts">${x.o.map((o, j) => `<button type="button" class="opt" data-q="${i}" data-j="${j}">${o}</button>`).join("")}</div><div class="fb" id="fb${i}" aria-live="polite"></div></div>`).join("");
+  $("quiz").querySelectorAll("button.opt").forEach(b => b.onclick = () => {
+    const i = +b.dataset.q, j = +b.dataset.j, x = QUIZ[i];
+    const group = $("quiz").querySelectorAll(`button[data-q="${i}"]`);
+    if (group[0].disabled) return;
+    group.forEach(g => { g.disabled = true; if (+g.dataset.j === x.a) g.classList.add("right"); });
+    if (j !== x.a) b.classList.add("wrong"); else right++;
+    $("fb" + i).innerHTML = (j === x.a ? "<strong>Right.</strong> " : "<strong>Not quite.</strong> ") + x.fb;
+    if (++answered === QUIZ.length) { $("score").hidden = false; $("score").textContent = `You got ${right} out of ${QUIZ.length}.`; }
+  });
+}
+$("qReset").onclick = renderQuiz;
+
+/* ---------------- Start ---------------- */
+renderScenarios(); renderMatrix();
+renderTScenarios(); renderTree();
+renderQuiz();
+</script>
+</body>
+</html>
